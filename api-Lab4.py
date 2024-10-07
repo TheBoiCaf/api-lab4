@@ -1,25 +1,56 @@
 #calling in request to use api
 import requests as rq
+import sys
+import json
+
+# api_url = 'https://dattebayo-api.onrender.com/characters'
+# response = rq.get(api_url)
+# response.raise_for_status()  # raises exception when not a 2xx response
+# if response.status_code != 204:
+#    response.json()
+# if (
+#     response.status_code != 204 and
+#     response.headers["content-type"].strip().startswith("application/json")
+# ):
+#     try:
+#         response.json()
+#     except ValueError:
+#       print("Womp")
+#         # decide how to handle a server that's misbehaving to this extent
+
+
 
 class APIHandler:
-    #this should have the link to api
-    #a method for getting characters
-    #a method for searching for character
-    #a method for filter characters by epidsode and name
- BASE_URL = 'https://gravity-falls-api.vercel.app/api'
- #take measn im taking 5 at a time, and skip mean im skiping the 0 character starting with first character
- def get_characters(self, take=5, skip=0):
-    print('')
+    BASE_URL = 'https://dattebayo-api.onrender.com'
+    def GetCharacter(self):
+        response = rq.get(f"{self.BASE_URL}/characters")
+        return response.json()
+#     #this should have the link to api
+#     #a method for getting characters
+#     #a method for searching for character
+#     #a method for filter characters by epidsode and name
+    # BASE_URL = 'https://gravity-falls-api.vercel.app/api/'
+  #take measn im taking 5 at a time, and skip mean im skiping the 0 character starting with first character
+    # def get_characters(self):
+    #  response = rq.get(f"{self.BASE_URL}/characters")
+    #  return response.json() if response.status_code == 200 else None
+#  def search_Characters(): 
+#     print('')
+#  def filter_Characters():
+#     print('')
 
-class Favorites:
-    print('something here')
+# class Favorites:
+#     print('something here')
     #this should have an array to hold the favorite characters or dictionary wtv works
     #a add to favorite method
     #a remove favorite method
     #a show list of favoite method
 
-class mainApp:
+def main():
     print('somehting here')
+
+if __name__ == "__main__":
+    main()
     # call on the class something like self.api_Handler = APIHandler
     #a while loop with an option list
     #if option chosen then run the methods that will be made in the main class to connect to the other classes
