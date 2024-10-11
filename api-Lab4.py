@@ -2,6 +2,7 @@
 import requests as rq
 import sys
 import json
+from collections import defaultdict
 
 # api_url = 'https://dattebayo-api.onrender.com/characters'
 # response = rq.get(api_url)
@@ -20,11 +21,13 @@ import json
 
 
 
-class APIHandler:
-    BASE_URL = 'https://dattebayo-api.onrender.com'
-    def GetCharacter(self):
-        response = rq.get(f"{self.BASE_URL}/characters")
-        return response.json()
+#class APIHandler:
+BASE_URL = 'https://dattebayo-api.onrender.com'
+def GetCharacter(searchCharacter):
+
+    response = rq.get(f"{BASE_URL}/characters?name={searchCharacter}")
+
+    return response.json()
 #     #this should have the link to api
 #     #a method for getting characters
 #     #a method for searching for character
@@ -47,7 +50,68 @@ class APIHandler:
     #a show list of favoite method
 
 def main():
-    print('somehting here')
+    newCharacter = input('Enter the name of the character you want to search: ')
+    returnedCharacters = GetCharacter(newCharacter)
+    filteredCharacters = []
+    for char in returnedCharacters["characters"]:
+        try:
+            newData = defaultdict(lambda: 'Not Available', {
+            "name": char["name"],
+            "debut": char["debut"],
+            "personal": char["personal"]
+            })
+            filteredCharacters.append(newData)
+        except KeyError:
+            newData = defaultdict(lambda: 'Not Available', {
+            "name": char["name"],
+            "personal": char["personal"]
+            })
+
+
+    # counter = 0
+    # for c in filteredCharacters:
+    #     print(f"{counter + 1}. {c["name"]}\n")
+    #     counter += 1
+
+
+    # answer = int(input("choose the number of which charcater you want more info on: "))
+    # pickedCharacter = []
+    # pickedCharacter.append(filteredCharacters[answer-1])
+    # characterInfo = []
+
+    # for picked in pickedCharacter["personaln"]:
+    #     personalData = {
+    #         "clan": picked["clan"]
+    #     }
+    #     characterInfo.append(personalData)
+    
+    for idx, c in enumerate(filteredCharacters):
+        print(f"{idx + 1}. {c['name']}\n")
+
+    answer = int(input("Choose the number of the character you want more info on: "))
+    
+    # Access the selected character
+    pickedCharacter = filteredCharacters[answer - 1]
+    
+    # Extract the "personal" data
+    characterInfo = {
+        "clan": pickedCharacter["personal"].get("clan"), 
+        "anime": pickedCharacter["debut"].get("anime"),
+        "manga": pickedCharacter["debut"].get("anime")
+    }
+
+    
+    print(f"Name: {pickedCharacter["name"]}")
+    print(f"Clan: {characterInfo["clan"]}")
+    print(f"Anime: {characterInfo["anime"]}")
+    print(f"Manga: {characterInfo["manga"]}")
+    
+
+    
+    # for key in characters:{
+    #     print(key,":", characters[key])
+    # }
+    # print(characters)
 
 if __name__ == "__main__":
     main()
