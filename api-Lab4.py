@@ -47,9 +47,10 @@ def GetCharacter(searchCharacter):
     #this should have an array to hold the favorite characters or dictionary wtv works
     #a add to favorite method
     #a remove favorite method
-    #a show list of favoite method
+    #a show list of favoite 
 
-def main():
+def CharacterSearch(): 
+
     newCharacter = input('Enter the name of the character you want to search: ')
     returnedCharacters = GetCharacter(newCharacter)
     filteredCharacters = []
@@ -112,6 +113,51 @@ def main():
     #     print(key,":", characters[key])
     # }
     # print(characters)
+
+def tailBeast():
+    newTailedBeast = input('Enter the name of the character you want to search: ')
+    returnedTailedBeast = GetCharacter(newTailedBeast)
+    filteredTailedBeast = []
+    for char in returnedTailedBeast["characters"]:
+        try:
+            newData = defaultdict(lambda: 'Not Available', {
+            "name": char["name"],
+            "debut": char["debut"],
+            "personal": char["personal"],
+            "uniqueTraits": char["uniqueTraits"]
+            })
+            filteredTailedBeast.append(newData)
+        except KeyError:
+            newData = defaultdict(lambda: 'Not Available', {
+            "name": char["name"],
+            "personal": char["personal"]
+            })
+    
+    for idx, c in enumerate(filteredTailedBeast):
+        print(f"{idx + 1}. {c['name']}\n")
+
+    answer = int(input("Choose the number of the character you want more info on: "))
+
+    pickedTailedBeast = filteredTailedBeast[answer - 1]
+    
+    # Extract the "personal" data
+    BeastInfo = {
+        "jinchūriki": pickedTailedBeast["personal"].get("jinchūriki"), 
+        "anime": pickedTailedBeast["debut"].get("anime"),
+        "manga": pickedTailedBeast["debut"].get("anime"),
+        
+    }
+
+    
+    print(f"Name: {pickedTailedBeast["name"]}")
+    print(f"Anime: {BeastInfo["anime"]}")
+    print(f"Manga: {BeastInfo["manga"]}")
+    print(f"uniqueTraits: {pickedTailedBeast["uniqueTraits"]}")
+
+
+def main():
+    tailBeast()
+    CharacterSearch()
 
 if __name__ == "__main__":
     main()
