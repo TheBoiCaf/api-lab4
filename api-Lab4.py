@@ -28,6 +28,12 @@ def GetCharacter(searchCharacter):
     response = rq.get(f"{BASE_URL}/characters?name={searchCharacter}")
 
     return response.json()
+
+def GetClans(searchClans):
+    response = rq.get(f"{BASE_URL}/clans?name={searchClans}")
+
+    return response.json()
+
 #     #this should have the link to api
 #     #a method for getting characters
 #     #a method for searching for character
@@ -67,6 +73,8 @@ def CharacterSearch():
             "name": char["name"],
             "personal": char["personal"]
             })
+    else:
+        print("invalid")
 
 
     # counter = 0
@@ -88,6 +96,8 @@ def CharacterSearch():
     
     for idx, c in enumerate(filteredCharacters):
         print(f"{idx + 1}. {c['name']}\n")
+    else:
+        print("invalid")
 
     answer = int(input("Choose the number of the character you want more info on: "))
     
@@ -115,7 +125,7 @@ def CharacterSearch():
     # print(characters)
 
 def tailBeast():
-    newTailedBeast = input('Enter the name of the character you want to search: ')
+    newTailedBeast = input('Enter the name of the Tailed-Beast you want to search: ')
     returnedTailedBeast = GetCharacter(newTailedBeast)
     filteredTailedBeast = []
     for char in returnedTailedBeast["characters"]:
@@ -132,9 +142,13 @@ def tailBeast():
             "name": char["name"],
             "personal": char["personal"]
             })
+    else:
+        print("invalid")
     
     for idx, c in enumerate(filteredTailedBeast):
         print(f"{idx + 1}. {c['name']}\n")
+    else:
+        print("invalid")
 
     answer = int(input("Choose the number of the character you want more info on: "))
 
@@ -154,10 +168,55 @@ def tailBeast():
     print(f"Manga: {BeastInfo["manga"]}")
     print(f"uniqueTraits: {pickedTailedBeast["uniqueTraits"]}")
 
+def clans():
+    newClans = input('Enter the name of the Clan you want to search: ')
+    returnedClans = GetClans(newClans)
+    filteredClans = []
+    for char in returnedClans["clans"]:
+        try:
+            newData = defaultdict(lambda: 'Not Available', {
+            "name": char["name"],
+            "characters": char["characters"]
+            })
+            filteredClans.append(newData)
+        except KeyError:
+            newData = defaultdict(lambda: 'Not Available', {
+            "name": char["name"],
+            })
+    else:
+        print("invalid")
+    
+    for idx, c in enumerate(filteredClans):
+        print(f"{idx + 1}. {c['name']}\n")
+    else:
+        print("invalid")
+
+    answer = int(input("Choose the number of the character you want more info on: "))
+
+    pickedClans = filteredClans[answer - 1]
+    
+    print(f"Name: {pickedClans["name"]}")
+    print(f"characters: {pickedClans["characters"]}")
+    
 
 def main():
-    tailBeast()
-    CharacterSearch()
+    while(True):
+        print("1. Characters")
+        print("2. Tailed-Beats")
+        print("3. Clans")
+        print("4. exit")
+        choose = input("which would you like to search for?")
+        if choose == "1":
+            CharacterSearch()
+        elif choose == "2":
+            tailBeast()
+        elif choose == "3":
+            clans()
+        elif choose == "4":
+            return False
+        else:
+            print("invalid input")
+    
 
 if __name__ == "__main__":
     main()
